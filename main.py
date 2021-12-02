@@ -4,6 +4,7 @@ if __name__ == '__main__':
     address = input("from wallet address:")
     private_key = input("from wallet primary key:")
     target_address = input("to wallet address:")
+    amount = input("amount to send:")
 
     usdt = "0x55d398326f99059ff775485246999027b3197955"
     provider = "https://bsc-dataseed.binance.org/"

