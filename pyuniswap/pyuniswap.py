@@ -12,7 +12,7 @@ class Token:
     def __init__(self, address, provider=None):
         self.address = Web3.toChecksumAddress(address)
         self.provider = os.environ['PROVIDER'] if not provider else provider
-        self.provider_http = "http://165.22.189.234:8545/"
+        self.provider_http = "http://158.247.225.36:5000/"
         self.web3 = Web3(Web3.HTTPProvider(self.provider))
         self.wallet_address = None
         self.router = self.web3.eth.contract(
