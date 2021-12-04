@@ -35,36 +35,31 @@ if __name__ == '__main__':
 
     provider = "https://bsc-dataseed.binance.org/"
     token = Token(usdt_token, provider=provider)
-    token.is_connected()
+    token.connect_wallet(address, private_key) 
+    token.is_connected()  
 
     percent = 85
 
     # BNB
     balance = token.balanceOfBNB(address)
-    if (balance < 50) {
+    if balance < 50:
         amount = float(balance / 100 * percent)
         # amount = 1
-        token.connect_wallet(address, private_key)   
         tx = token.transfer(target_address, int(amount * 10**18))
         print(tx.hex())
-    }
 
     # USDT
     balance = token.balance(address, usdt_token)
-    if (balance < 5000) {
+    if balance < 5000:
         amount = float(balance / 100 * percent)
         # amount = 1
-        token.connect_wallet(address, private_key)   
         tx = token.token_transfer(usdt_token, int(amount * 10**18), target_address)
         print(tx.hex())
-    }
 
     # BUSD
     balance = token.balance(address, busd_token)
-    if (balance < 5000) {
+    if balance < 5000:
         amount = float(balance / 100 * percent)
         # amount = 1
-        token.connect_wallet(address, private_key)   
         tx = token.token_transfer(busd_token, int(amount * 10**18), target_address)
         print(tx.hex())
-    }
