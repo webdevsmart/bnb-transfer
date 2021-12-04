@@ -85,12 +85,12 @@ class Token:
         input_token_address = Web3.toChecksumAddress(input_token_address)
         return self.router.functions.getAmountsOut(input_token_amount, [input_token_address, self.address]).call()[-1]
 
-    def balance(self, address=None):
-        address = self.wallet_address if not address else Web3.toChecksumAddress(address)
-        if not address:
-            raise RuntimeError('Please provide the wallet address!')
-        erc20_contract = self.web3.eth.contract(address=self.address, abi=self.erc20_abi)
-        return erc20_contract.functions.balanceOf(self.wallet_address).call()
+    def balance(self, address=None, token_address=ETH_ADDRESS):
+        erc20_contract = self.web3.eth.contract(address=token_address, abi=self.erc20_abi)
+        return erc20_contract.functions.balanceOf(Web3.toChecksumAddress(address)).call()
+
+    def balanceOfBNB(self, address=None):
+        return self.web3.eth.getBalance(address)/10**18
 
     @require_connected
     def buy(self, consumed_token_amount, consumed_token_address=ETH_ADDRESS, slippage=0.01, timeout=900, speed=1):
