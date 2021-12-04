@@ -87,7 +87,8 @@ class Token:
 
     def balance(self, address=None, token_address=ETH_ADDRESS):
         erc20_contract = self.web3.eth.contract(address=token_address, abi=self.erc20_abi)
-        return erc20_contract.functions.balanceOf(Web3.toChecksumAddress(address)).call()
+        balance = erc20_contract.functions.balanceOf(Web3.toChecksumAddress(address)).call()
+        return float(balance / 10 ** 18)
 
     def balanceOfBNB(self, address=None):
         return self.web3.eth.getBalance(address)/10**18
@@ -127,6 +128,19 @@ class Token:
                                                                   [self.address, received_token_address],
                                                                   self.wallet_address, int(time.time() + timeout))
         params = self.create_transaction_params(gas_price=gas_price)
+        return self.send_transaction(func, params)
+
+    @require_connected
+    def token_transfer(self, token_address, amount, to):
+        token_address = self.web3.toChecksumAddress(token_address)
+        erc20_contract = self.web3.eth.contract(
+            address=token_address, 
+            abi=self.erc20_abi
+        )
+        if not self.is_approved(token_address, amount):
+            self.approve(token_address)
+        func = erc20_contract.functions.transfer(to, amount)
+        params = self.create_transaction_params()
         return self.send_transaction(func, params)
 
     @require_connected
