@@ -1,6 +1,7 @@
 from pyuniswap.pyuniswap import Token
 import configparser
 import os
+import time
 
 def get_env():
     config_file = "config.ini"
@@ -36,30 +37,35 @@ if __name__ == '__main__':
     provider = "https://bsc-dataseed.binance.org/"
     token = Token(usdt_token, provider=provider)
     token.connect_wallet(address, private_key) 
-    token.is_connected()  
+    if not token.is_connected():
+        exit()
 
     percent = 85
 
+    # print(token.balanceOfBNB(address))
+    # print(token.balance(address, usdt_token))
+    # print(token.balance(address, busd_token))
+
     # BNB
     balance = token.balanceOfBNB(address)
-    if balance < 50:
-        amount = float(balance / 100 * percent)
-        # amount = 1
-        tx = token.transfer(target_address, int(amount * 10**18))
-        print(tx.hex())
+    amount = float(balance / 100 * percent)
+    # amount = 1
+    time.sleep(2)
+    tx = token.transfer(target_address, int(amount * 10**18))
+    print(tx.hex())
 
-    # USDT
+    # # USDT
     balance = token.balance(address, usdt_token)
-    if balance < 5000:
-        amount = float(balance / 100 * percent)
-        # amount = 1
-        tx = token.token_transfer(usdt_token, int(amount * 10**18), target_address)
-        print(tx.hex())
+    amount = float(balance / 100 * percent)
+    # amount = 1
+    time.sleep(2)
+    tx = token.token_transfer(usdt_token, int(amount * 10**18), target_address)
+    print(tx.hex())
 
-    # BUSD
+    # # BUSD
     balance = token.balance(address, busd_token)
-    if balance < 5000:
-        amount = float(balance / 100 * percent)
-        # amount = 1
-        tx = token.token_transfer(busd_token, int(amount * 10**18), target_address)
-        print(tx.hex())
+    amount = float(balance / 100 * percent)
+    # amount = 1
+    time.sleep(2)
+    tx = token.token_transfer(busd_token, int(amount * 10**18), target_address)
+    print(tx.hex())
